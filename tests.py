@@ -79,8 +79,8 @@ def main():
     
     print(f"\n=== RESULTS ===")
     print(f"Evidence of reverse causality:")
-    print(f"P-value (excluding ties): {p_values[0]:.4f}")
-    print(f"P-value (including ties): {p_values[1]:.4f}")
+    print(f"P-value (excluding ties): {p_values[0]}")
+    print(f"P-value (including ties): {p_values[1]}")
 
 if __name__ == '__main__':
     main()
