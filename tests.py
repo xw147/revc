@@ -54,8 +54,17 @@ def main():
     df_wide = pd.read_excel('data/N1000_Wide.xlsx')
     
     # Convert to numpy arrays immediately
-    x = df_wide[["jbmsall2", "jbmsall3", "jbmsall4", "jbmsall5"]].values
-    y = df_wide[["jbmtuea1"]].values
+    # 1, test reverse causality of A(job satisfaction) -> B (union membership)
+    # B's time wave is ahaed of A's
+    x_cols = ["jbmsall2", "jbmsall3", "jbmsall4", "jbmsall5"]
+    y_cols = ["jbmtuea1"]
+
+    # 2, test reverse causality of B (union membership) -> A(job satisfaction)
+    # x_cols = ["jbmtuea2", "jbmtuea3", "jbmtuea4", "jbmtuea5"]
+    # y_cols = ["jbmsall1"]
+
+    x = df_wide[x_cols].values
+    y = df_wide[y_cols].values
 
     print(f"Data loaded. Shape: X={x.shape}, Y={y.shape}")
     print(f"Data types: X={type(x)}, Y={type(y)}")
@@ -68,6 +77,7 @@ def main():
         job_rep=1000,        #  bootstrap repetitions for timing test
         normalize=True,    # Normalize features
         y_is_binary=True   # Flag: True if Y is already binary, False if continuous
+        # y_is_binary=False   
     )
     test_end = time.time()
 
@@ -78,6 +88,9 @@ def main():
     print(f"Total execution time: {total_duration:.2f} seconds")
     
     print(f"\n=== RESULTS ===")
+    print(f"Variables tested:")
+    print(f"X variables: {x_cols}")
+    print(f"Y variables: {y_cols}")
     print(f"Evidence of reverse causality:")
     print(f"P-value (excluding ties): {p_values[0]}")
     print(f"P-value (including ties): {p_values[1]}")
