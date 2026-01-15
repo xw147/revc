@@ -51,17 +51,30 @@ def main():
     start_time = time.time()
     
     # load data
-    df_wide = pd.read_excel('data/N1000_Wide.xlsx')
+    # df_wide = pd.read_excel('data/N1000_Wide.xlsx')
+    df_wide = pd.read_csv('data/JS_WFC_noMiss_wide.csv')
     
     # Convert to numpy arrays immediately
-    # 1, test reverse causality of A(job satisfaction) -> B (union membership)
-    # B's time wave is ahaed of A's
-    x_cols = ["jbmsall2", "jbmsall3", "jbmsall4", "jbmsall5"]
-    y_cols = ["jbmtuea1"]
 
-    # 2, test reverse causality of B (union membership) -> A(job satisfaction)
+    ########## start of job satisfaction vs union membership ##########
+    # 1, test if past B (union membership) causes future A(job satisfaction)
+    # x_cols = ["jbmsall2", "jbmsall3", "jbmsall4", "jbmsall5"]
+    # y_cols = ["jbmtuea1"]
+    # 2, test if past A(job satisfaction) causes future B (union membership)
     # x_cols = ["jbmtuea2", "jbmtuea3", "jbmtuea4", "jbmtuea5"]
     # y_cols = ["jbmsall1"]
+    ########## end of job satisfaction vs union membership ##########
+
+    ########## start of job satisfaction vs work-family conflict ##########
+    # 1, test if past B (work-family conflict) causes future A(job satisfaction)
+    # x_cols = ["jsm_w7", "jsm_w8", "jsm_w9"]
+    # y_cols = ["wfca_w6"]
+
+    # 2, test if past A(job satisfaction) causes future B (work-family conflict)
+    x_cols = ["wfca_w7", "wfca_w8", "wfca_w9"]
+    y_cols = ["jsm_w6"]
+
+    ########## end of job satisfaction vs work-family conflict ##########
 
     x = df_wide[x_cols].values
     y = df_wide[y_cols].values
@@ -76,8 +89,8 @@ def main():
         Y=y,  # Now numpy array
         job_rep=1000,        #  bootstrap repetitions for timing test
         normalize=True,    # Normalize features
-        y_is_binary=True   # Flag: True if Y is already binary, False if continuous
-        # y_is_binary=False   
+        # y_is_binary=True   # Flag: True if Y is already binary, False if continuous
+        y_is_binary=False   
     )
     test_end = time.time()
 
